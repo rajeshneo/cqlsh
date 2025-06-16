@@ -9,6 +9,8 @@ FROM python:3.10-alpine3.17
 #RUN pip install --no-cache-dir cqlsh
 RUN apk update
 RUN apk upgrade
+# Update pip and setuptools
+RUN pip install --no-cache-dir --upgrade pip==23.3.0 setuptools==70.0.0
 RUN pip install cqlsh
 
 ADD cqlsh /usr/local/bin/cqlsh
