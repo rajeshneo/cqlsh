@@ -13,7 +13,7 @@ RUN apk update && \
   apk upgrade && \
   apk add bash && \
   pip install --no-cache-dir --upgrade pip==23.3.0 setuptools==78.1.1 && \
-  pip install cqlsh==5.0.4
+  pip install cqlsh
 
 ADD cqlsh /usr/local/bin/cqlsh
 ADD cqlsh.py /usr/local/bin/cqlsh.py
