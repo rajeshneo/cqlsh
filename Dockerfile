@@ -12,7 +12,7 @@ RUN adduser -D appuser
 RUN apk update && \
   apk upgrade && \
   pip install --no-cache-dir --upgrade pip==23.3.0 setuptools==78.1.1 && \
-  pip install cqlsh
+  pip install cqlsh==5.0.4
 
 ADD cqlsh /usr/local/bin/cqlsh
 ADD cqlsh.py /usr/local/bin/cqlsh.py
@@ -27,5 +27,5 @@ RUN chown -R appuser:appuser /usr/local/bin/cqlsh /usr/local/bin/cqlsh.py
 USER appuser
 
 # Set default command
-ENTRYPOINT ["cqlsh"]
-CMD ["--help"]
+#ENTRYPOINT ["cqlsh"]
+#CMD ["--help"]
