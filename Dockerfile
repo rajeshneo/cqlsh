@@ -16,7 +16,7 @@ RUN adduser -D appuser
 RUN apk update && \
   apk upgrade && \
   apk add bash libev && \
-  apk add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/main sqlite-libs
+  apk add --upgrade --repository=https://dl-cdn.alpinelinux.org/alpine/edge/main sqlite-libs
 
 # Copy compiled Python packages (cassandra-driver .so linked against libev)
 COPY --from=builder /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
