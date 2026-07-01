@@ -11,7 +11,7 @@ RUN adduser -D appuser
 # Install cqlsh from PyPI
 RUN apk update && \
   apk upgrade && \
-  apk add bash && \
+  apk add bash gcc musl-dev libev-dev && \
   pip install --no-cache-dir --upgrade "pip>=25.3" "setuptools>=80.9.0" "wheel>=0.46.2" && \
   pip install cqlsh
 
