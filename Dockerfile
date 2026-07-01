@@ -12,10 +12,11 @@ FROM python:3.10-alpine3.23
 
 RUN adduser -D appuser
 
-# Version constraints fail loudly if patched packages not in alpine3.23 repos
+# sqlite 3.53.2 (CVE-2026-11822/11824) not yet backported to alpine3.23; pull from edge
 RUN apk update && \
   apk upgrade && \
-  apk add bash libev "sqlite-libs>=3.53.2" "util-linux>=2.41.4"
+  apk add bash libev && \
+  apk add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/main sqlite-libs
 
 # Copy compiled Python packages (cassandra-driver .so linked against libev)
 COPY --from=builder /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
