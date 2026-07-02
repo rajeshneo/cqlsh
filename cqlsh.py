@@ -35,9 +35,18 @@ from cassandra.marshal import int64_unpack
 from cassandra.cqltypes import cql_typename
 from cassandra.cluster import Cluster
 from cassandra.auth import PlainTextAuthProvider
-from six import StringIO, ensure_text, ensure_str
-from six.moves import configparser, input
-import six
+from io import StringIO
+import configparser
+
+def ensure_text(s, encoding='utf-8', errors='strict'):
+    if isinstance(s, bytes):
+        return s.decode(encoding, errors)
+    return s if isinstance(s, str) else str(s)
+
+def ensure_str(s, encoding='utf-8', errors='strict'):
+    if isinstance(s, bytes):
+        return s.decode(encoding, errors)
+    return s if isinstance(s, str) else str(s)
 
 import cmd
 import codecs
@@ -140,16 +149,12 @@ if cql_zip:
     ver = os.path.splitext(os.path.basename(cql_zip))[0][len(CQL_LIB_PREFIX):]
     sys.path.insert(0, os.path.join(cql_zip, 'cassandra-driver-' + ver))
 
-third_parties = ('futures-', 'six-', 'geomet-')
+third_parties = ('futures-', 'geomet-')
 
 for lib in third_parties:
     lib_zip = find_zip(lib)
     if lib_zip:
         sys.path.insert(0, lib_zip)
-
-# We cannot import six until we add its location to sys.path so the Python
-# interpreter can find it. Do not move this to the top.
-
 
 warnings.filterwarnings("ignore", r".*blist.*")
 try:
@@ -1623,7 +1628,7 @@ class Shell(cmd.Cmd):
             fname = self.cql_unprotect_value(fname)
 
         copyoptnames = list(
-            map(six.text_type.lower, parsed.get_binding('optnames', ())))
+            map(str.lower, parsed.get_binding('optnames', ())))
         copyoptvals = list(map(self.cql_unprotect_value,
                            parsed.get_binding('optvals', ())))
         opts = dict(list(zip(copyoptnames, copyoptvals)))
@@ -2060,7 +2065,7 @@ class Shell(cmd.Cmd):
             out = self.query_out
 
         # convert Exceptions, etc to text
-        if not isinstance(text, six.text_type):
+        if not isinstance(text, str):
             text = "{}".format(text)
 
         to_write = self.applycolor(text, color) + ('\n' if newline else '')
